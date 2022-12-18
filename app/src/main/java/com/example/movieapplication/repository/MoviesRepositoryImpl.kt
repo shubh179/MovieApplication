@@ -17,39 +17,33 @@ class MoviesRepositoryImpl @Inject constructor(private val apiService: ApiServic
 
     override suspend fun getMoviesList(page: Int): Flow<ApiStatus<GetMoviesResponse>> {
         return flow {
-
-            // get the comment Data from the api
-            val comment = apiService.getMovies(page = page)
-
-            // Emit this data wrapped in
-            // the helper class [CommentApiState]
-            emit(ApiStatus.success(comment))
+            val movieList = apiService.getMovies(page = page)
+            emit(ApiStatus.success(movieList))
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getPopularMovies(
-        page: Int
-    ) {
-        apiService.getPopularMovies(page = page)
-            .enqueue(object : Callback<GetMoviesResponse> {
-                override fun onResponse(
-                    call: Call<GetMoviesResponse>,
-                    response: Response<GetMoviesResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-
-                        if (responseBody != null) {
-                            Log.d("Repository", "Movies: ${responseBody.movies}")
-                        } else {
-                            Log.d("Repository", "Failed to get response")
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
-                    Log.e("Repository", "onFailure", t)
-                }
-            })
-    }
+//    override fun getPopularMovies(
+//        page: Int
+//    ) {
+//        apiService.getPopularMovies(page = page)
+//            .enqueue(object : Callback<GetMoviesResponse> {
+//                override fun onResponse(
+//                    call: Call<GetMoviesResponse>,
+//                    response: Response<GetMoviesResponse>
+//                ) {
+//                    if (response.isSuccessful) {
+//                        val responseBody = response.body()
+//
+//                        if (responseBody != null) {
+//                            Log.d("Repository", "Movies: ${responseBody.movies}")
+//                        } else {
+//                            Log.d("Repository", "Failed to get response")
+//                        }
+//                    }
+//                }
+//                override fun onFailure(call: Call<GetMoviesResponse>, t: Throwable) {
+//                    Log.e("Repository", "onFailure", t)
+//                }
+//            })
+//    }
 }

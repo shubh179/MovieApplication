@@ -7,8 +7,11 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import com.example.movieapplication.adapter.MovieAdapter
 import com.example.movieapplication.databinding.ActivityMainBinding
 import com.example.movieapplication.utils.Status
+import com.example.movieapplication.viewModel.MovieViewModel
+import com.example.movieapplication.viewModel.MovieViewModelFactory
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,45 +22,32 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MovieViewModel
     private lateinit var binding: ActivityMainBinding
+    lateinit var movieAdapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProviders.of(this, factory).get(MovieViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory)[MovieViewModel::class.java]
 
         lifecycleScope.launch {
-
-            viewModel.commentState.collect {
-
-                // When state to check the
-                // state of received data
+            viewModel.movieListState.collect {
+                Log.d("Activity: ", "status")
                 when (it.status) {
-
-                    // If its loading state then
-                    // show the progress bar
                     Status.LOADING -> {
                         binding.progressBar.isVisible = true
+                        Log.d("Activity: ", "null")
                     }
-                    // If api call was a success , Update the Ui with
-                    // data and make progress bar invisible
                     Status.SUCCESS -> {
                         binding.progressBar.isVisible = false
-
-                        // Received data can be null, put a check to prevent
-                        // null pointer exception
-                        it.data?.let { comment ->
-//                            binding.commentIdTextview.text = comment.id.toString()
-//                            binding.nameTextview.text = comment.name
-//                            binding.emailTextview.text = comment.email
-//                            binding.commentTextview.text = comment.comment
-                            Log.d("Activity: ", comment.movies?.size.toString())
+                        it.data?.let { movieList ->
+                            movieAdapter = MovieAdapter(movieList.movies)
+                            binding.movieRecyclerView.adapter = movieAdapter
+                            Log.d("Activity: ", movieList.movies?.size.toString())
                         }
                     }
-                    // In case of error, show some data to user
                     else -> {
                         binding.progressBar.isVisible = false
                         Log.d("Activity: ", it.message.toString())
