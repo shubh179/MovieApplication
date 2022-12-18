@@ -1,5 +1,6 @@
 package com.example.movieapplication.viewModel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieapplication.data.GetMoviesResponse
@@ -10,7 +11,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 
-class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+open class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
     val movieListState = MutableStateFlow(
         ApiStatus(
@@ -20,10 +21,11 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
     )
 
     init {
-        getMovieList(1)
+        getMovieList()
     }
 
-    private fun getMovieList(page: Int) {
+    @VisibleForTesting
+    protected fun getMovieList() {
         movieListState.value = ApiStatus.loading()
 
         viewModelScope.launch {
