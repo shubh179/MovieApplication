@@ -1,13 +1,11 @@
 package com.example.movieapplication.di.module
 
 import com.example.movieapplication.ApiService
-import com.example.movieapplication.Constants.BASE_URL
-import com.example.movieapplication.MainActivity
+import com.example.movieapplication.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Inject
 
 @Module
 class ApiModule {

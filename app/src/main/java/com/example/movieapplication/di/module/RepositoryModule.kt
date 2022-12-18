@@ -1,7 +1,7 @@
 package com.example.movieapplication.di.module
 
 import com.example.movieapplication.ApiService
-import com.example.movieapplication.repository.MoviesRepository
+import com.example.movieapplication.repository.MoviesRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -11,7 +11,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun providesMoviesRepository(apiService: ApiService): MoviesRepository {
-        return MoviesRepository(apiService)
+    fun providesMoviesRepository(apiService: ApiService): MoviesRepositoryImpl {
+        return MoviesRepositoryImpl(apiService)
     }
 }
