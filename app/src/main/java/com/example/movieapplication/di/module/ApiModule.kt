@@ -1,6 +1,6 @@
 package com.example.movieapplication.di.module
 
-import com.example.movieapplication.ApiService
+import com.example.movieapplication.api.ApiService
 import com.example.movieapplication.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides

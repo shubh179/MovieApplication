@@ -8,6 +8,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.example.movieapplication.adapter.MovieAdapter
+import com.example.movieapplication.data.Movie
 import com.example.movieapplication.databinding.ActivityMainBinding
 import com.example.movieapplication.utils.Status
 import com.example.movieapplication.viewModel.MovieViewModel
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MovieViewModel
     private lateinit var binding: ActivityMainBinding
-    lateinit var movieAdapter: MovieAdapter
+    private lateinit var movieAdapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         appComponent.inject(this)
@@ -34,25 +35,23 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             viewModel.movieListState.collect {
-                Log.d("Activity: ", "status")
                 when (it.status) {
                     Status.LOADING -> {
                         binding.progressBar.isVisible = true
-                        Log.d("Activity: ", "null")
+                        Log.d("MainActivity", "loading")
                     }
                     Status.SUCCESS -> {
                         binding.progressBar.isVisible = false
                         it.data?.let { movieList ->
-                            movieAdapter = MovieAdapter(movieList.movies)
+                            movieAdapter = MovieAdapter(this@MainActivity, movieList.movies as MutableList<Movie>?)
                             binding.movieRecyclerView.adapter = movieAdapter
-                            Log.d("Activity: ", movieList.movies?.size.toString())
+                            Log.d("MainActivity", movieList.movies?.size.toString())
                         }
                     }
                     else -> {
                         binding.progressBar.isVisible = false
-                        Log.d("Activity: ", it.message.toString())
-                        Toast.makeText(this@MainActivity, "${it.message}", Toast.LENGTH_SHORT)
-                            .show()
+                        Log.d("MainActivity", it.message.toString())
+                        Toast.makeText(this@MainActivity, "${it.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

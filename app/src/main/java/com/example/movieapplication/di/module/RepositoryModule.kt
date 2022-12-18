@@ -1,6 +1,6 @@
 package com.example.movieapplication.di.module
 
-import com.example.movieapplication.ApiService
+import com.example.movieapplication.api.ApiService
 import com.example.movieapplication.repository.MoviesRepositoryImpl
 import dagger.Module
 import dagger.Provides
