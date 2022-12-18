@@ -16,7 +16,7 @@ import com.example.movieapplication.data.Movie
 import com.example.movieapplication.utils.Constants.IMAGE_URL
 import com.squareup.picasso.Picasso
 
-class MovieAdapter(private var context: Context, private var movieList: MutableList<Movie>?) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
+class MovieAdapter(private var context: Context, private var movieList: MutableList<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(

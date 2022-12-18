@@ -42,10 +42,11 @@ class MainActivity : AppCompatActivity() {
                     }
                     Status.SUCCESS -> {
                         binding.progressBar.isVisible = false
-                        it.data?.let { movieList ->
-                            movieAdapter = MovieAdapter(this@MainActivity, movieList.movies as MutableList<Movie>?)
+                        it.data?.let { response ->
+                            val movieList : MutableList<Movie> = response.movies?.subList(0, 10) as MutableList<Movie>
+                            movieAdapter = MovieAdapter(this@MainActivity, movieList)
                             binding.movieRecyclerView.adapter = movieAdapter
-                            Log.d("MainActivity", movieList.movies?.size.toString())
+                            Log.d("MainActivity", movieList.size.toString())
                         }
                     }
                     else -> {
