@@ -57,7 +57,7 @@ class MovieAdapter(private var context: Context, private var movieList: MutableL
             movieTitle.text = movie.title
             movieReleaseDate.text = movie.releaseDate
             movieOverview.text = movie.overview
-            movieRating.rating = movie.rating
+            movieRating.rating = movie.rating / 2
         }
 
         alertDialogBuilder.setView(view)
